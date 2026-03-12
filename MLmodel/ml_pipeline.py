@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from src.data_cleaning import step_02_clean_data
 from src.data_loading import step_01_load_data
 
 
@@ -52,7 +53,13 @@ def main() -> None:
     args = parse_args()
     file_path = resolve_file_path(args.file_path)
     print("=== ML Pipeline Started ===")
-    step_01_load_data(file_path)
+    print("------------------------------------------------------------")
+    filtered_dataframe = step_01_load_data(file_path)
+    cleaned_dataframe = step_02_clean_data(filtered_dataframe)
+    if cleaned_dataframe.empty:
+        raise ValueError(
+            "Data cleaning removed all rows. No data remains for further processing."
+        )
     print("=== ML Pipeline Finished ===")
 
 

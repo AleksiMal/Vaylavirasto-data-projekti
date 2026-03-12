@@ -23,15 +23,39 @@ The `step_01_load_data()` function loads the configured Excel worksheets using w
 
 It first prints the first data row in the format `Worksheet | Column: value` so the loaded worksheet content can be validated before further processing.
 
-After the validation output, the function validates and filters the data to the selected ML feature columns:
+After the validation output, the function validates the `Raportti 10m MALLI` worksheet and filters its data to the selected ML feature columns:
 
 - `Pysty_kiiht`
 - `Sivuheilahdus_kiiht`
 - `Nyökkimis_kiiht`
 - `Yhdistetty_kiiht_rms`
 
-At least one of the required worksheets must contain all four selected ML feature columns. If neither required worksheet contains the complete feature set, the function raises an error.
+Both required worksheets must exist in the Excel file:
 
-The original larger worksheet data is not kept after filtering. Only the filtered dataset is retained in memory and returned from the function.
+- `Raportti 100m`
+- `Raportti 10m MALLI`
+
+The `Raportti 10m MALLI` worksheet must contain all four selected ML feature columns. If any of these columns are missing, the function raises an error.
+
+The original larger worksheet data is not kept after filtering. Only the filtered dataset from the `Raportti 10m MALLI` worksheet is retained in memory and returned from the function.
 
 Finally, the function prints a five-row table preview of the filtered dataset.
+
+## 2.2 step_02_clean_data()
+
+The `step_02_clean_data()` function receives the filtered `DataFrame` returned by `step_01_load_data()` and removes rows that are not suitable for further processing.
+
+It first finds all rows that contain at least one missing value and removes them from the dataset.
+
+After that, it checks the remaining rows for non-numeric values in any column and removes those rows as well.
+
+Finally, it checks the rows that still remain for negative values in any column and removes those rows as well.
+
+The function then prints data cleaning statistics, including:
+
+- the index values of removed rows with missing values
+- the index values of removed rows with non-numeric values
+- the index values of removed rows with negative values
+- the number of rows remaining after cleaning
+
+Finally, the function returns the cleaned `DataFrame` with its index reset.
