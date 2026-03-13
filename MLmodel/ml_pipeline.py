@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 
 from src.data_cleaning import step_02_clean_data
+from src.feature_engineering import step_04_engineer_features
 from src.data_loading import step_01_load_data
 
 
@@ -52,7 +53,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     file_path = resolve_file_path(args.file_path)
+    print()
     print("=== ML Pipeline Started ===")
+    print()
     print("------------------------------------------------------------")
     filtered_dataframe = step_01_load_data(file_path)
     cleaned_dataframe = step_02_clean_data(filtered_dataframe)
@@ -60,7 +63,12 @@ def main() -> None:
         raise ValueError(
             "Data cleaning removed all rows. No data remains for further processing."
         )
+    engineered_dataframe = step_04_engineer_features(cleaned_dataframe)
+    print()
+    print("------------------------------------------------------------")
+    print()
     print("=== ML Pipeline Finished ===")
+    print()
 
 
 if __name__ == "__main__":

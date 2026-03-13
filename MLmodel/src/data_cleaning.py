@@ -34,9 +34,6 @@ def step_02_clean_data(dataframe: pd.DataFrame) -> pd.DataFrame:
         print(f"Removed rows with negative values: {rows_with_negative_values}")
     else:
         print("Removed rows with negative values: none")
-    print()
     print(f"Rows remaining after cleaning: {len(cleaned_dataframe)}")
-    print()
-    print("------------------------------------------------------------")
 
     return cleaned_dataframe
